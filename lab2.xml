@@ -2,7 +2,7 @@
 <project name="lab2" default="all">
   
   
-  <property file="build.properties"/>
+  <property file="lab2.properties"/>
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
   <property name="skip.tests" value="true"/>
