@@ -12,6 +12,7 @@ public class Itinerary
 {
     private  Queue<String> que = new ArrayDeque<>();
     private  Queue<Pair<Pair<String,String>, Integer>> TimeQue = new ArrayDeque<>();
+    private Queue<Pair<Pair<PointVe,PointVe>, Integer>> quee = new ArrayDeque<>();
     private Set<Stoper> StopSet;
     private Integer wait;
     private Integer takebus;
@@ -19,6 +20,7 @@ public class Itinerary
     private Integer end;
     private String startPl;
     private String endPl;
+    private boolean enhanced = false;
     /*
     3.	Class: Itinerary
         Rep:
@@ -49,6 +51,21 @@ public class Itinerary
         startPl = null;
         endPl = null;
         this.StopSet = StopSet;
+        enhanced = false;
+    }
+    public Itinerary()
+    {
+        wait = 0;
+        takebus = 0;
+        start = 60*60*24;
+        end = 0;
+        startPl = null;
+        endPl = null;
+        enhanced = true;
+    }
+    public void addenhanced(PointVe pst, PointVe ped, Integer spendtime)
+    {
+        quee.add(new Pair<>(new Pair<>(pst,ped), spendtime));
     }
     public void addPartTime(String From,String To,Integer time)
     {
@@ -127,10 +144,19 @@ public class Itinerary
         }
         return swt.toString();
     }
-
+    public String genInstructionsEnhanced()
+    {
+        StringWriter swt = new StringWriter();
+        while(!quee.isEmpty())
+        {
+            Pair<Pair<PointVe, PointVe>, Integer> ppi  = quee.poll();
+            swt.write("With Path Start: @Point\t"+ppi.getKey1().getKey1().toString()+"\n\t\tEnd @Point"+ppi.getKey1().getKey2().toString()+"\n\t\t\tCosts Time=@Seconds\t"+ppi.getKey2()+"\n");
+        }
+        return swt.toString();
+    }
     @Override
     public String toString()
     {
-        return getInstructions();
+        return this.enhanced? genInstructionsEnhanced():getInstructions();
     }
 }

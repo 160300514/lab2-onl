@@ -1,4 +1,4 @@
 language: java
 jdk:
-    - oraclejdk9
-script: ant build
+    - oraclejdk8
+script: ant

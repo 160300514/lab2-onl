@@ -1,10 +1,7 @@
 package test.P3;
 
 import org.junit.Test;
-import src.P3.BuildAdapter;
-import src.P3.Itinerary;
-import src.P3.PathFinder;
-import src.P3.Stoper;
+import src.P3.*;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -40,7 +37,41 @@ public class PathFinderTest
         how can i do,-1.2332,100.3333,12200
 
    **************************************************************
-   * Using test: time = 7000, from as we can, to how can it be
+   * Using Test: testEnhancedNOBUGS(): final implemnetation, no bugs.
+   * time = 6100, from as we can, to how can it be
+   *
+   * results:
+   * With Path Start: @Point	Staying point: bus: Start Point	Stay @Station:	as we can	 switch:0.9902	90.0000
+			@Time:	6100
+
+		End @PointStaying point: bus: 78D	Stay @Station:	as we can	 switch:0.9902	90.0000
+			@Time:	7100
+
+			Costs Time=@Seconds	1000
+    With Path Start: @Point	Staying point: bus: 78D	Stay @Station:	as we can	 switch:0.9902	90.0000
+			@Time:	7100
+
+		End @PointStaying point: bus: 78D	Stay @Station:	how are you	 switch:1.0002	91.0902
+			@Time:	8900
+
+			Costs Time=@Seconds	1800
+    With Path Start: @Point	Staying point: bus: 78D	Stay @Station:	how are you	 switch:1.0002	91.0902
+			@Time:	8900
+
+		End @PointStaying point: bus: 67R	Stay @Station:	how are you	 switch:1.0002	91.0902
+			@Time:	10000
+
+			Costs Time=@Seconds	1100
+    With Path Start: @Point	Staying point: bus: 67R	Stay @Station:	how are you	 switch:1.0002	91.0902
+			@Time:	10000
+
+		End @PointStaying point: bus: 67R	Stay @Station:	how can it be	 switch:0.2332	100.3333
+			@Time:	15900
+
+			Costs Time=@Seconds	5900
+   *
+   *
+   * Using test: time = 7000, from as we can, to how can it be(Second implementation: with bugs.)
    *
    * results:
    * Travel from @Station:	Your Start Point		to @Station:	as we can_61C_7500		For @Seconds:	500
@@ -53,23 +84,37 @@ public class PathFinderTest
      Format: @Station: Station_BusLine_Time to @Station   ...., For @Seconds: SEC(Integer)
      */
     @Test
-    public void testMain()throws FileNotFoundException
+    public void testMainWIthBUGS()throws FileNotFoundException
     {
         PathFinder pf = bda.build("src/src/P3/tmpdata.csv", 1200);
         Map<String, Integer> ann =  pf.Dijkstra("as we can_61C_6200");
+        /*
         for(String key:ann.keySet())
         {
             System.out.println(key+"\t\t"+ann.get(key));
-        }
+        }*/
         List<Itinerary> ans = pf.ProvidedForTest("as we can","how can it be",7000);
         Map<String, String> mp = pf.getSep();
+        /*
         for(Itinerary anss: ans)
         {
             System.out.println(anss.toString());
-        }
+        }*/
 
         //Itinerary ans = pf.computeRoute(new Stoper("as we can","0.9902","90.0000",1200), new Stoper("how can it be","0.2332","100.3333",1200), 5800);
         //System.out.println("Wait: "+ans.getWaitTime());
         //System.out.println("Instruction:  "+ans.getInstructions());
+    }
+
+    @Test
+    public void testEnhancedNOBUGS() throws FileNotFoundException {
+        EnhancedBuildAdapter ebd = new EnhancedBuildAdapter();
+        EnhancedRoutePlanner hrp = ebd.build("src/src/P3/tmpdata.csv", 1200);
+        List<Itinerary> ans= hrp.computeRoute(new Stoper("as we can",null,null,0),
+                new Stoper("how can it be",null,null,0), 6100);
+        for(Itinerary anss:ans)
+        {
+            System.out.println(anss.toString());
+        }
     }
 }

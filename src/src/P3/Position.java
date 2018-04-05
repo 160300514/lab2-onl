@@ -33,4 +33,12 @@ class Position
     {
         return this.Name+"\t switch:"+this.Latitude+"\t"+this.Longtitude;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        assert obj instanceof Position;
+        Position p = (Position) obj ;
+        return p.getName().equals(this.Name) && p.getLatitude().equals(this.getLatitude()) && p.getLongtitude().equals(this.Longtitude);
+    }
 }
